@@ -25,7 +25,7 @@ namespace ReadingList.Domain.Entities
             PasswordHash = passwordHash;
         }
 
-        public static User CreateUser(Email email, string name, string passwordHash)
+        public static User Create(Email email, string name, string passwordHash)
         {
             return new User(email, name, passwordHash);
         }

@@ -22,6 +22,12 @@ namespace ReadingList.Domain.Commom.Validations
                 throw new DomainException($"{paramName} can not be null or white space.");
         }
 
+        public static void AgainstMaxLength(string value, int maxLength, string paramName)
+        {
+            if(value.Length > maxLength)
+                throw new DomainException($"{paramName} can not have more than {maxLength} carcateres, given {value.Length}.");
+        }
+
         public static void Against<TException>(bool condition, string message) where TException : Exception
         {
             if (condition) throw (TException)Activator.CreateInstance(typeof(TException), message)!;

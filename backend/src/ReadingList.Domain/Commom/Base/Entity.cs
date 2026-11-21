@@ -15,7 +15,17 @@ namespace ReadingList.Domain.Commom.Base
             Id = Guid.NewGuid();
             CreatedAt = DateTime.UtcNow;
         }
-       
+
+        // Rehydration: identity comes from storage
+        protected Entity(Guid id, DateTime createdAt, DateTime? updatedAt)
+        {
+            Id = id;
+            CreatedAt = createdAt;
+            UpdatedAt = updatedAt;
+        }
+
+
+
         protected void SetUpdatedAt()
         {
             UpdatedAt = DateTime.UtcNow;
@@ -48,28 +58,5 @@ namespace ReadingList.Domain.Commom.Base
         {
             return !(left == right);
         }
-
-
-        ////Domain Events handling
-
-        //private readonly List<IDomainEvent> _domainEvents = new();
-        //public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
-
-        //protected void AddDomainEvent(IDomainEvent domainEvent)
-        //{
-        //    _domainEvents.Add(domainEvent);
-        //}
-
-        //public void RemoveDomainEvent(IDomainEvent domainEvent)
-        //{
-        //    _domainEvents.Remove(domainEvent);
-        //}
-
-        //public void ClearDomainEvents()
-        //{
-        //    _domainEvents.Clear();
-        //}
-
-
     }
 }
