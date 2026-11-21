@@ -487,6 +487,6 @@ $RECYCLE.BIN/
 *.swp
 
 # prevent SQLite to repo
-*.db 
-*.db-shm 
+*.db
+*.db-shm
 *.db-wal

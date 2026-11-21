@@ -1,11 +1,8 @@
-@ReadingList.Books.Api_HostAddress = http://localhost:5202
+@ReadingList.Books.Api_HostAddress = http://localhost:5002
 
 GET {{ReadingList.Books.Api_HostAddress}}/openapi/v1.json
 Accept: application/json
 
 ###
 
-GET {{ReadingList.Books.Api_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
+# Add endpoint requests here as they are implemented.

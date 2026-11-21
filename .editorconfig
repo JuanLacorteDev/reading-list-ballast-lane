@@ -10,6 +10,9 @@ indent_style = space
 [*.cs]
 indent_size = 4
 
-[*.{ts,html,scss,json}]
+[*.{ts,html,scss}]
 indent_size = 2
 quote_type = single
+
+[*.json]
+indent_size = 2
