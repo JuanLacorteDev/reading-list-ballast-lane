@@ -1,0 +1,11 @@
+@ReadingList.Identity.Api_HostAddress = http://localhost:5223
+
+GET {{ReadingList.Identity.Api_HostAddress}}/openapi/v1.json
+Accept: application/json
+
+###
+
+GET {{ReadingList.Identity.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

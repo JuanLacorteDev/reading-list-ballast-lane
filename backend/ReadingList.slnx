@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/ReadingList.Application/ReadingList.Application.csproj" />
+    <Project Path="src/ReadingList.Books.Api/ReadingList.Books.Api.csproj" />
+    <Project Path="src/ReadingList.Domain/ReadingList.Domain.csproj" />
+    <Project Path="src/ReadingList.Identity.Api/ReadingList.Identity.Api.csproj" />
+    <Project Path="src/ReadingList.Infrasctructure/ReadingList.Infrasctructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/ReadingList.Domain.Tests/ReadingList.Domain.Tests.csproj" />
+  </Folder>
+</Solution>
