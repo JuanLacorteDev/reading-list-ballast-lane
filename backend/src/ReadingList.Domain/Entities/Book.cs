@@ -41,6 +41,7 @@ namespace ReadingList.Domain.Entities
             return new(id, ownerId, title, author, status, rating, createdAt, updatedAt);
         }
 
+
         [MemberNotNull(nameof(Title), nameof(Author))]
         private void SetDetails(Guid ownerId, string title, string author)
         {
@@ -60,6 +61,14 @@ namespace ReadingList.Domain.Entities
             Author = author;
         }
 
+        public void UpdateDetails(string title, string author, ReadingStatus status, int? rating)
+        {
+            SetDetails(OwnerId, title, author);
+            ChangeStatus(status);
+
+            if(rating is not null)
+                Rate(rating);
+        }
 
         public void ChangeStatus(ReadingStatus status)
         {
@@ -72,7 +81,7 @@ namespace ReadingList.Domain.Entities
             SetUpdatedAt();
         }
 
-        public void Rate(int rating)
+        public void Rate(int? rating)
         {
             Guard.Against<DomainException>(Status != ReadingStatus.Read, "Should only be able to set rating on readed books.");
             Guard.Against<DomainException>(!(1 <= rating && rating <= 5), "Should only be able to set rating in 1 to 5 range.");

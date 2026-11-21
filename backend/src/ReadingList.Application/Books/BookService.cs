@@ -1,9 +1,7 @@
 using ReadingList.Application.Abstractions.Persistence;
 using ReadingList.Application.Common.Results;
 using ReadingList.Domain.Common.Enums;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using ReadingList.Domain.Entities;
 
 namespace ReadingList.Application.Books
 {
@@ -14,29 +12,46 @@ namespace ReadingList.Application.Books
         {
             _bookRepository = bookRepository;
         }
-        public Task<Result<BookResponse>> CreateAsync(Guid ownerId, CreateBookRequest request, CancellationToken cancellationToken = default)
+        public async Task<Result<BookResponse>> CreateAsync(Guid ownerId, CreateBookRequest request, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+
+            var book = Book.Create(ownerId, request.Title, request.Author);
+            await _bookRepository.AddAsync(book, cancellationToken);
+
+            return BookResponse.FromDomain(book);
         }
 
-        public Task<Result> DeleteAsync(Guid ownerId, Guid id, CancellationToken cancellationToken = default)
+        public async Task<Result> DeleteAsync(Guid ownerId, Guid id, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var deleted = await _bookRepository.DeleteAsync(id, ownerId, cancellationToken);
+            return deleted ? Result.Success() : Result.Failure(BookErrors.NotFound);
         }
 
-        public Task<Result<BookResponse>> GetByIdAsync(Guid ownerId, Guid id, CancellationToken cancellationToken = default)
+        public async Task<Result<BookResponse>> GetByIdAsync(Guid ownerId, Guid id, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var book = await _bookRepository.GetByIdAsync(id, ownerId, cancellationToken);
+            if (book is null)
+                return BookErrors.NotFound;
+
+            return BookResponse.FromDomain(book);
         }
 
-        public Task<Result<IReadOnlyList<BookResponse>>> ListAsync(Guid ownerId, ReadingStatus? status, CancellationToken cancellationToken = default)
+        public async Task<Result<IReadOnlyList<BookResponse>>> ListAsync(Guid ownerId, ReadingStatus? status, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var books = await _bookRepository.ListByOwnerAsync(ownerId, status, cancellationToken);
+            return books.Select(BookResponse.FromDomain).ToList();
         }
 
-        public Task<Result<BookResponse>> UpdateAsync(Guid ownerId, Guid id, UpdateBookRequest request, CancellationToken cancellationToken = default)
+        public async Task<Result<BookResponse>> UpdateAsync(Guid ownerId, Guid id, UpdateBookRequest request, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var book = await _bookRepository.GetByIdAsync(id, ownerId, cancellationToken);
+            if (book is null)
+                return BookErrors.NotFound;
+
+            book.UpdateDetails(request.Title, request.Author, request.Status, request.Rating);
+            var updated = await _bookRepository.UpdateAsync(book, cancellationToken);
+
+            return updated ? BookResponse.FromDomain(book) : BookErrors.NotFound;
         }
     }
 }

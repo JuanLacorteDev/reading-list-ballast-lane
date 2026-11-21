@@ -11,17 +11,13 @@ public sealed record BookResponse(
     Guid Id,
     string Title,
     string Author,
-    ReadingStatus Status,
-    int? Rating,
-    DateTime CreatedAt,
-    DateTime? UpdatedAt)
+    ReadingStatus status,
+    DateTime createdAt)
 {
     public static BookResponse FromDomain(Book book) => new(
         book.Id,
         book.Title,
         book.Author,
         book.Status,
-        book.Rating,
-        book.CreatedAt,
-        book.UpdatedAt);
+        book.CreatedAt);
 }

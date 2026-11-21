@@ -53,10 +53,8 @@ namespace ReadingList.Application.Tests.Books
             //Act
             var result = await _sut.UpdateAsync(OwnerId, book.Id, request);
 
-
             //Assert
             Assert.True(result.IsSuccess);
-            
 
             var updated = Assert.Single(_repository.Books);
             Assert.Equal("Dune - Part One", updated.Title);
