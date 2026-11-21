@@ -3,7 +3,7 @@ using ReadingList.Domain.Entities;
 
 namespace ReadingList.Application.Books;
 
-public sealed record CreateBookRequest(string Title, string Author, ReadingStatus Status, int? Rating);
+public sealed record CreateBookRequest(string Title, string Author);
 
 public sealed record UpdateBookRequest(string Title, string Author, ReadingStatus Status, int? Rating);
 
