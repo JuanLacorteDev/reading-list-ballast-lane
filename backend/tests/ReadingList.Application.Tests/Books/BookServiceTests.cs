@@ -12,9 +12,9 @@ namespace ReadingList.Application.Tests.Books
         private static readonly Guid OtherOwnerId = Guid.NewGuid();
 
         private readonly InMemoryBookRepository _repository = new();
-        private readonly BookService _sut;
+        private readonly BookService _service;
 
-        public BookServiceTests() => _sut = new BookService(_repository);
+        public BookServiceTests() => _service = new BookService(_repository);
 
         private Book SeedBook(Guid ownerId)
         {
@@ -31,7 +31,7 @@ namespace ReadingList.Application.Tests.Books
             var request = new CreateBookRequest("Dune", "Frank Herbert");
 
             //Act
-            var result = await _sut.CreateAsync(OwnerId, request);
+            var result = await _service.CreateAsync(OwnerId, request);
 
 
             //Assert
@@ -51,7 +51,7 @@ namespace ReadingList.Application.Tests.Books
             var book = SeedBook(OwnerId);
 
             //Act
-            var result = await _sut.UpdateAsync(OwnerId, book.Id, request);
+            var result = await _service.UpdateAsync(OwnerId, book.Id, request);
 
             //Assert
             Assert.True(result.IsSuccess);
@@ -68,7 +68,7 @@ namespace ReadingList.Application.Tests.Books
             var book = SeedBook(OtherOwnerId);
 
             //Act
-            var result = await _sut.GetByIdAsync(OwnerId, book.Id);
+            var result = await _service.GetByIdAsync(OwnerId, book.Id);
 
             Assert.True(result.IsFailure);
             Assert.Equal(ErrorType.NotFound, result.Error!.Type);
@@ -81,7 +81,7 @@ namespace ReadingList.Application.Tests.Books
             var book = SeedBook(OtherOwnerId);
 
             //Act
-            var result = await _sut.DeleteAsync(OwnerId, book.Id);
+            var result = await _service.DeleteAsync(OwnerId, book.Id);
 
             //Assert
             Assert.Equal(ErrorType.NotFound, result.Error!.Type);
