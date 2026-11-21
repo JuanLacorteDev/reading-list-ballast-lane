@@ -1,6 +1,6 @@
-using ReadingList.Domain.Commom.Base;
-using ReadingList.Domain.Commom.Exceptions;
-using ReadingList.Domain.Commom.Validations;
+using ReadingList.Domain.Common.Base;
+using ReadingList.Domain.Common.Exceptions;
+using ReadingList.Domain.Common.Validations;
 using ReadingList.Domain.ValueObjects;
 using System.Net.NetworkInformation;
 

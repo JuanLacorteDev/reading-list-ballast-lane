@@ -1,7 +1,7 @@
-using ReadingList.Domain.Commom.Base;
-using ReadingList.Domain.Commom.Enums;
-using ReadingList.Domain.Commom.Exceptions;
-using ReadingList.Domain.Commom.Validations;
+using ReadingList.Domain.Common.Base;
+using ReadingList.Domain.Common.Enums;
+using ReadingList.Domain.Common.Exceptions;
+using ReadingList.Domain.Common.Validations;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;

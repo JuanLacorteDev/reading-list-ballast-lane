@@ -1,5 +1,5 @@
-using ReadingList.Domain.Commom.Exceptions;
-using ReadingList.Domain.Commom.Validations;
+using ReadingList.Domain.Common.Exceptions;
+using ReadingList.Domain.Common.Validations;
 
 namespace ReadingList.Domain.ValueObjects
 {

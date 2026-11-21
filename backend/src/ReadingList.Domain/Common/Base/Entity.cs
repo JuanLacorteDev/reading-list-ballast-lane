@@ -1,4 +1,4 @@
-namespace ReadingList.Domain.Commom.Base
+namespace ReadingList.Domain.Common.Base
 {
     public abstract class Entity
     {

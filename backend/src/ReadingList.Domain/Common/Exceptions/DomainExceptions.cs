@@ -1,4 +1,4 @@
-namespace ReadingList.Domain.Commom.Exceptions
+namespace ReadingList.Domain.Common.Exceptions
 {
     public class DomainException : Exception
     {

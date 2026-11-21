@@ -1,6 +1,6 @@
-using ReadingList.Domain.Commom.Exceptions;
+using ReadingList.Domain.Common.Exceptions;
 
-namespace ReadingList.Domain.Commom.Validations
+namespace ReadingList.Domain.Common.Validations
 {
     internal static class Guard
     {

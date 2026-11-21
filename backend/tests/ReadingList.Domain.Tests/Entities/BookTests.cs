@@ -1,5 +1,5 @@
-using ReadingList.Domain.Commom.Enums;
-using ReadingList.Domain.Commom.Exceptions;
+using ReadingList.Domain.Common.Enums;
+using ReadingList.Domain.Common.Exceptions;
 using ReadingList.Domain.Entities;
 using ReadingList.Domain.ValueObjects;
 using System;
@@ -139,7 +139,7 @@ namespace ReadingList.Domain.Tests.Entities
             Assert.Null(book.Rating);
         }
 
-        [Fact(DisplayName = "Shouw throw error when pass a invalid value for status")]
+        [Fact(DisplayName = "Should throw error when pass a invalid value for status")]
         public void ChangeStatus_NoValidEnum_ThrowsDomainException()
         {
             // Arrange

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ReadingList.Domain.Commom.Enums
+namespace ReadingList.Domain.Common.Enums
 {
     public enum ReadingStatus
     {
