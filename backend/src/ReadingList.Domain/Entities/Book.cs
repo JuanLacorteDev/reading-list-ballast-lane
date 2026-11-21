@@ -63,7 +63,7 @@ namespace ReadingList.Domain.Entities
 
         public void ChangeStatus(ReadingStatus status)
         {
-            Guard.Against<DomainException>(!ReadingStatus.IsDefined(status), "The provider enum value is not defined.");
+            Guard.Against<DomainException>(!ReadingStatus.IsDefined(status), "The provided enum value is not defined.");
 
             if (status is not ReadingStatus.Read)
                 Rating = null;
@@ -74,7 +74,6 @@ namespace ReadingList.Domain.Entities
 
         public void Rate(int rating)
         {
-            Guard.AgainstNull(rating, nameof(rating));
             Guard.Against<DomainException>(Status != ReadingStatus.Read, "Should only be able to set rating on readed books.");
             Guard.Against<DomainException>(!(1 <= rating && rating <= 5), "Should only be able to set rating in 1 to 5 range.");
 

@@ -87,6 +87,7 @@ namespace ReadingList.Domain.Tests.Entities
         [Theory(DisplayName = "Should throw erros when try to set rating out of 1 to 5 range")]
         [InlineData(-1)]
         [InlineData(6)]
+        [InlineData(0)]
         public void SetRating_WhenOutOfRange_Fails(int rating)
         {
             // Arrange
@@ -102,8 +103,28 @@ namespace ReadingList.Domain.Tests.Entities
             Assert.Contains("Should only be able to set rating in 1 to 5 range.", exception.Message);
         }
 
-        [Fact(DisplayName = "Should return rating null when Status change from Read or Abandoned to another")]
-        public void ChangeStatus_FromReadOrAbandonedToAnother_ClearsRating()
+        [Theory(DisplayName = "Should throw erros when try to set rating out of 1 to 5 range")]
+        [InlineData(1)]
+        [InlineData(2)]
+        [InlineData(3)]
+        [InlineData(4)]
+        [InlineData(5)]
+        public void SetRating_WithValidData(int rating)
+        {
+            // Arrange
+            var beforeCreate = DateTime.UtcNow;
+            var book = Book.Create(ValidOwnerId, ValidTitle, ValidAuthor);
+            book.ChangeStatus(ReadingStatus.Read);
+
+            // Act
+            book.Rate(rating);
+
+            // Assert
+            Assert.Equal(rating, book.Rating);
+        }
+
+        [Fact(DisplayName = "Should return rating null when Status change from Read to another")]
+        public void ChangeStatus_ToNotRead_ClearsRating()
         {
             // Arrange
             var beforeCreate = DateTime.UtcNow;
@@ -132,7 +153,7 @@ namespace ReadingList.Domain.Tests.Entities
                () => book.ChangeStatus((ReadingStatus)99));
 
             // Assert
-            Assert.Contains("The provider enum value is not defined.", exception.Message);
+            Assert.Contains("The provided enum value is not defined.", exception.Message);
         }
     }
 }
