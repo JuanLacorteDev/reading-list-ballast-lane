@@ -33,5 +33,10 @@ namespace ReadingList.Application.Tests.Fakes
         {
             return Task.FromResult(_users.FirstOrDefault(u => u.Id == id));
         }
+
+        public Task<bool> LoginAsync(Email email, string passwordHash, CancellationToken cancellationToken = default)
+        {
+            return Task.FromResult(_users.Any(u => u.Email.Equals(email) && u.PasswordHash.Equals(passwordHash)));
+        }
     }
 }

@@ -7,7 +7,8 @@ namespace ReadingList.Application.Auth
 {
     public static class AuthErrors
     {
-        public static readonly Error NotFound = Error.NotFound("User.NotFound", "User was not found.");
-        public static readonly Error Unauthorized = Error.Validation("User.Validation", "Email or Password is not valid");
+        public static readonly Error InvalidCredentials = Error.Unauthorized("Auth.InvalidCredentials", "Invalid email or password.");
+        public static readonly Error EmailAlreadyInUse = Error.Conflict("Auth.EmailAlreadyInUse", "Email is already registered.");
+        public static readonly Error NotFound = Error.NotFound("Auth.UserNotFound", "User was not found.");
     }
 }
