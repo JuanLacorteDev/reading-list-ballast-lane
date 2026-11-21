@@ -44,6 +44,9 @@ namespace ReadingList.Domain.Entities
         [MemberNotNull(nameof(Title), nameof(Author))]
         private void SetDetails(Guid ownerId, string title, string author)
         {
+            title = title.Trim();
+            author = author.Trim();
+
             Guard.AgainstEmptyGuid(ownerId, nameof(ownerId));
 
             Guard.AgainstNullOrWhiteSpace(title, nameof(title));
@@ -53,29 +56,30 @@ namespace ReadingList.Domain.Entities
             Guard.AgainstMaxLength(author, 100, nameof(author));
 
             OwnerId = ownerId;
-            Title = title.Trim();
-            Author = author.Trim();
+            Title = title;
+            Author = author;
         }
 
 
-        public void SetStatus(ReadingStatus status)
+        public void ChangeStatus(ReadingStatus status)
         {
-            //if change the status from read or abandoned to another, should clear the rating
-            var isReadOrAbandoned = Status.Equals(ReadingStatus.Read) || Status.Equals(ReadingStatus.Abandoned);
-            if (isReadOrAbandoned && !Status.Equals(status))
+            Guard.Against<DomainException>(!ReadingStatus.IsDefined(status), "The provider enum value is not defined.");
+
+            if (status is not ReadingStatus.Read)
                 Rating = null;
 
             Status = status;
+            SetUpdatedAt();
         }
 
-        public void SetRating(int rating)
+        public void Rate(int rating)
         {
             Guard.AgainstNull(rating, nameof(rating));
-            Guard.Against<DomainException>(
-               !Status.Equals(ReadingStatus.Read),
-               "Should only be able to set rating on readed books.");
+            Guard.Against<DomainException>(Status != ReadingStatus.Read, "Should only be able to set rating on readed books.");
+            Guard.Against<DomainException>(!(1 <= rating && rating <= 5), "Should only be able to set rating in 1 to 5 range.");
 
             Rating = rating;
+            SetUpdatedAt();
         }
     }
 }

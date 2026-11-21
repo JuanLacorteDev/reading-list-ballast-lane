@@ -74,14 +74,32 @@ namespace ReadingList.Domain.Tests.Entities
         {
             // Arrange
             var beforeCreate = DateTime.UtcNow;
+            var book = Book.Create(ValidOwnerId, ValidTitle, ValidAuthor);
 
             // Act
-            var book = Book.Create(ValidOwnerId, ValidTitle, ValidAuthor);
             var exception = Assert.Throws<DomainException>(
-               () => book.SetRating(1));
+               () => book.Rate(1));
 
             // Assert
             Assert.Contains("Should only be able to set rating on readed books.", exception.Message);
+        }
+
+        [Theory(DisplayName = "Should throw erros when try to set rating out of 1 to 5 range")]
+        [InlineData(-1)]
+        [InlineData(6)]
+        public void SetRating_WhenOutOfRange_Fails(int rating)
+        {
+            // Arrange
+            var beforeCreate = DateTime.UtcNow;
+            var book = Book.Create(ValidOwnerId, ValidTitle, ValidAuthor);
+            book.ChangeStatus(ReadingStatus.Read);
+
+            // Act
+            var exception = Assert.Throws<DomainException>(
+               () => book.Rate(rating));
+
+            // Assert
+            Assert.Contains("Should only be able to set rating in 1 to 5 range.", exception.Message);
         }
 
         [Fact(DisplayName = "Should return rating null when Status change from Read or Abandoned to another")]
@@ -90,16 +108,31 @@ namespace ReadingList.Domain.Tests.Entities
             // Arrange
             var beforeCreate = DateTime.UtcNow;
             var book = Book.Create(ValidOwnerId, ValidTitle, ValidAuthor);
-            book.SetStatus(ReadingStatus.Read);
-            book.SetRating(5);
+            book.ChangeStatus(ReadingStatus.Read);
+            book.Rate(5);
 
             // Act
-            book.SetStatus(ReadingStatus.WantToRead);
+            book.ChangeStatus(ReadingStatus.WantToRead);
 
             // Assert
             Assert.Null(book.Rating);
         }
 
+        [Fact(DisplayName = "Shouw throw error when pass a invalid value for status")]
+        public void ChangeStatus_NoValidEnum_ThrowsDomainException()
+        {
+            // Arrange
+            var beforeCreate = DateTime.UtcNow;
+            var book = Book.Create(ValidOwnerId, ValidTitle, ValidAuthor);
+            book.ChangeStatus(ReadingStatus.Read);
+            book.Rate(5);
 
+            // Act
+            var exception = Assert.Throws<DomainException>(
+               () => book.ChangeStatus((ReadingStatus)99));
+
+            // Assert
+            Assert.Contains("The provider enum value is not defined.", exception.Message);
+        }
     }
 }
