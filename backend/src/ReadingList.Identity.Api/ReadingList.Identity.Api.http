@@ -1,8 +1,25 @@
-@ReadingList.Identity.Api_HostAddress = http://localhost:5001
+@baseUrl = http://localhost:5001
 
-GET {{ReadingList.Identity.Api_HostAddress}}/openapi/v1.json
-Accept: application/json
+### Register (anonymous)
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
 
-###
+{
+  "name": "Reader",
+  "email": "reader@example.com",
+  "password": "Str0ngPassword!"
+}
 
-# Add endpoint requests here as they are implemented.
+### Login with the seeded demo user (anonymous)
+# @name login
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "demo@readinglist.dev",
+  "password": "Demo@123"
+}
+
+### Current user (requires the token)
+GET {{baseUrl}}/api/auth/me
+Authorization: Bearer {{login.response.body.$.accessToken}}
