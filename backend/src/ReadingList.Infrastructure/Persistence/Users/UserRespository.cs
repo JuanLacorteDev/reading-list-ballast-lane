@@ -1,4 +1,6 @@
+using Microsoft.Data.Sqlite;
 using ReadingList.Application.Abstractions.Persistence;
+using ReadingList.Domain.Common.Enums;
 using ReadingList.Domain.Entities;
 using ReadingList.Domain.ValueObjects;
 using System;
@@ -61,14 +63,7 @@ namespace ReadingList.Infrastructure.Persistence.Users
             await using var reader = await command.ExecuteReaderAsync(cancellationToken);
             if (!await reader.ReadAsync(cancellationToken)) return null;
 
-            return User.Restore(
-                id: Guid.Parse(reader.GetString(0)),
-                email: Email.Create(reader.GetString(1)),
-                name: reader.GetString(2),
-                passwordHash: reader.GetString(3),
-                createdAt: DateTime.Parse(reader.GetString(4), CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                updatedAt: reader.IsDBNull(5) ? null : DateTime.Parse(reader.GetString(5), CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind)
-            );
+            return Map(reader);
         }
 
         public async Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
@@ -83,6 +78,12 @@ namespace ReadingList.Infrastructure.Persistence.Users
             await using var reader = await command.ExecuteReaderAsync(cancellationToken);
             if (!await reader.ReadAsync(cancellationToken)) return null;
 
+            return Map(reader);
+        }
+
+
+        private static User Map(SqliteDataReader reader)
+        {
             return User.Restore(
                 id: Guid.Parse(reader.GetString(0)),
                 email: Email.Create(reader.GetString(1)),

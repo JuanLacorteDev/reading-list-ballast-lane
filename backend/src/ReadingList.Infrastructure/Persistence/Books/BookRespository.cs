@@ -1,3 +1,4 @@
+using Microsoft.Data.Sqlite;
 using ReadingList.Application.Abstractions.Persistence;
 using ReadingList.Domain.Common.Enums;
 using ReadingList.Domain.Entities;
@@ -70,16 +71,7 @@ namespace ReadingList.Infrastructure.Persistence.Books
             await using var reader = await command.ExecuteReaderAsync(cancellationToken);
             if (!await reader.ReadAsync(cancellationToken)) return null;
 
-            return Book.Restore(
-                id: Guid.Parse(reader.GetString(0)),
-                ownerId: Guid.Parse(reader.GetString(1)),
-                title: reader.GetString(2),
-                author: reader.GetString(3),
-                status: (ReadingStatus)reader.GetInt32(4),
-                rating: reader.GetInt32(5),
-                createdAt: DateTime.Parse(reader.GetString(6)),
-                updatedAt: DateTime.Parse(reader.GetString(7))
-            );
+            return Map(reader);
         }
 
         public async Task<IReadOnlyList<Book>> ListByOwnerAsync(Guid ownerId, ReadingStatus? status = null, CancellationToken cancellationToken = default)
@@ -111,16 +103,7 @@ namespace ReadingList.Infrastructure.Persistence.Books
             await using var reader = await command.ExecuteReaderAsync(cancellationToken);
             while (await reader.ReadAsync(cancellationToken))
             {
-                books.Add(Book.Restore(
-                    id: Guid.Parse(reader.GetString(0)),
-                    ownerId: Guid.Parse(reader.GetString(1)),
-                    title: reader.GetString(2),
-                    author: reader.GetString(3),
-                    status: Enum.Parse<ReadingStatus>(reader.GetString(4)),
-                    rating: reader.IsDBNull(5) ? null : reader.GetInt32(5),
-                    createdAt: DateTime.Parse(reader.GetString(6), CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                    updatedAt: reader.IsDBNull(7) ? null : DateTime.Parse(reader.GetString(7), CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind)
-                ));
+                books.Add(Map(reader));
             }
 
             return books;
@@ -153,6 +136,20 @@ namespace ReadingList.Infrastructure.Persistence.Books
 
             var rowsAffected = await command.ExecuteNonQueryAsync(cancellationToken);
             return rowsAffected > 0;
+        }
+
+        private static Book Map(SqliteDataReader reader)
+        {
+            return Book.Restore(
+               id: reader.GetGuid(0),
+               ownerId: reader.GetGuid(1),
+               title: reader.GetString(2),
+               author: reader.GetString(3),
+               status: (ReadingStatus)reader.GetInt32(4),
+               rating: reader.IsDBNull(5) ? null : reader.GetInt32(5),
+               createdAt: DateTime.Parse(reader.GetString(6)),
+               updatedAt: reader.IsDBNull(7) ? null : DateTime.Parse(reader.GetString(7))
+            );
         }
     }
 }

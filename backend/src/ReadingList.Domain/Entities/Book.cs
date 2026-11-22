@@ -89,5 +89,6 @@ namespace ReadingList.Domain.Entities
             Rating = rating;
             SetUpdatedAt();
         }
+
     }
 }
