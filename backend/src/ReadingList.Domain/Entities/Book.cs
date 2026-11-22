@@ -61,7 +61,7 @@ namespace ReadingList.Domain.Entities
             Author = author;
         }
 
-        public void UpdateDetails(string title, string author, ReadingStatus status, int? rating)
+        public void UpdateDetails(string title, string author, ReadingStatus status, int? rating = null)
         {
             SetDetails(OwnerId, title, author);
             ChangeStatus(status);

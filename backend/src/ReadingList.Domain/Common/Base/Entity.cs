@@ -13,7 +13,7 @@ namespace ReadingList.Domain.Common.Base
         protected Entity()
         {
             Id = Guid.NewGuid();
-            CreatedAt = DateTime.UtcNow;
+            CreatedAt = DateTime.Now;
         }
 
         // Rehydration: identity comes from storage
@@ -28,7 +28,7 @@ namespace ReadingList.Domain.Common.Base
 
         protected void SetUpdatedAt()
         {
-            UpdatedAt = DateTime.UtcNow;
+            UpdatedAt = DateTime.Now;
         }
 
 

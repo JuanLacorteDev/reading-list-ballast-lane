@@ -29,10 +29,11 @@ namespace ReadingList.Infrastructure.Persistence.Books
                 VALUES ($id, $ownerId, $title, $author, $status, $createdAt);
                 """;
 
-            command.Parameters.AddWithValue("$id", book.Id);
-            command.Parameters.AddWithValue("$ownerId", book.OwnerId);
+            command.Parameters.AddWithValue("$id", book.Id.ToString());
+            command.Parameters.AddWithValue("$ownerId", book.OwnerId.ToString());
             command.Parameters.AddWithValue("$title", book.Title);
             command.Parameters.AddWithValue("$author", book.Author);
+            command.Parameters.AddWithValue("status", (int)book.Status);
             command.Parameters.AddWithValue("$createdAt", book.CreatedAt.ToString("O", CultureInfo.InvariantCulture));
 
             await command.ExecuteNonQueryAsync(cancellationToken);
@@ -63,7 +64,8 @@ namespace ReadingList.Infrastructure.Persistence.Books
             await using var command = connection.CreateCommand();
 
             command.CommandText = """
-                SELECT Id, OwnerId, Title, Author, Status, Rating, CreatedAt, UpdatedAt FROM BOOKS WHERE Id = $id AND OwnerId = $ownerId;
+                SELECT Id, OwnerId, Title, Author, Status, Rating, CreatedAt, UpdatedAt
+                FROM Books WHERE Id = $id AND OwnerId = $ownerId;
                 """;
             command.Parameters.AddWithValue("$id", id.ToString());
             command.Parameters.AddWithValue("$ownerId", ownerId.ToString());
@@ -92,7 +94,7 @@ namespace ReadingList.Infrastructure.Persistence.Books
             if (status is not null)
             {
                 sql.Append(" AND Status = $status");
-                command.Parameters.AddWithValue("$status", status.Value.ToString());
+                command.Parameters.AddWithValue("$status", (int)status);
             }
 
             sql.Append(" ORDER BY CreatedAt DESC;");
@@ -130,7 +132,7 @@ namespace ReadingList.Infrastructure.Persistence.Books
             command.Parameters.AddWithValue("$ownerId", book.OwnerId.ToString());
             command.Parameters.AddWithValue("$title", book.Title);
             command.Parameters.AddWithValue("$author", book.Author);
-            command.Parameters.AddWithValue("$status", book.Status.ToString());
+            command.Parameters.AddWithValue("$status", (int)book.Status);
             command.Parameters.AddWithValue("$rating", (object?)book.Rating ?? DBNull.Value);
             command.Parameters.AddWithValue("$updatedAt", book.UpdatedAt?.ToString("O", CultureInfo.InvariantCulture) ?? (object)DBNull.Value);
 
