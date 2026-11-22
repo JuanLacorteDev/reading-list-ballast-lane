@@ -1,8 +1,56 @@
-@ReadingList.Books.Api_HostAddress = http://localhost:5002
+@identityUrl = http://localhost:5001
+@baseUrl = http://localhost:5002
 
-GET {{ReadingList.Books.Api_HostAddress}}/openapi/v1.json
-Accept: application/json
+### Login on the Identity API to get a token
+# @name login
+POST {{identityUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "demo@readinglist.dev",
+  "password": "Demo@123"
+}
 
 ###
+@token = {{login.response.body.$.accessToken}}
 
-# Add endpoint requests here as they are implemented.
+### List my books (optional filter: WantToRead, Reading, Read, Abandoned)
+GET {{baseUrl}}/api/books?status=Read
+Authorization: Bearer {{token}}
+
+### Create a book (always starts as WantToRead, no rating)
+# @name create
+POST {{baseUrl}}/api/books
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Working Effectively with Legacy Code",
+  "author": "Michael Feathers"
+}
+
+###
+@bookId = {{create.response.body.$.id}}
+
+### Get by id
+GET {{baseUrl}}/api/books/{{bookId}}
+Authorization: Bearer {{token}}
+
+### Update (rating only allowed when status is Read)
+PUT {{baseUrl}}/api/books/{{bookId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Working Effectively with Legacy Code",
+  "author": "Michael Feathers",
+  "status": "Read",
+  "rating": 5
+}
+
+### Delete
+DELETE {{baseUrl}}/api/books/{{bookId}}
+Authorization: Bearer {{token}}
+
+### Without a token: 401
+GET {{baseUrl}}/api/books

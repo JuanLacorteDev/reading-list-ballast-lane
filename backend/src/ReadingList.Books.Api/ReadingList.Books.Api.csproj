@@ -1,10 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.15" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\ReadingList.Api.Common\ReadingList.Api.Common.csproj" />
     <ProjectReference Include="..\ReadingList.Application\ReadingList.Application.csproj" />
     <ProjectReference Include="..\ReadingList.Infrastructure\ReadingList.Infrastructure.csproj" />
   </ItemGroup>
