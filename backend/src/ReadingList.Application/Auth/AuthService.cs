@@ -3,9 +3,6 @@ using ReadingList.Application.Abstractions.Security;
 using ReadingList.Application.Common.Results;
 using ReadingList.Domain.Entities;
 using ReadingList.Domain.ValueObjects;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ReadingList.Application.Auth
 {
