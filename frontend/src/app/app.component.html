@@ -1,0 +1,18 @@
+<header class="app-header">
+  <div class="container app-header__inner">
+    <a class="brand" routerLink="/">Reading List</a>
+
+    @if (auth.isAuthenticated()) {
+      <div class="session">
+        @if (auth.currentUser(); as user) {
+          <span class="session__name muted">{{ user.name }}</span>
+        }
+        <button type="button" class="btn btn-secondary" (click)="auth.logout()">Sign out</button>
+      </div>
+    }
+  </div>
+</header>
+
+<main class="container app-main">
+  <router-outlet />
+</main>

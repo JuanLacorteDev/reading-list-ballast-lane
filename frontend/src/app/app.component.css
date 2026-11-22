@@ -21,3 +21,16 @@
 .app-main {
   padding-block: var(--space-5);
 }
+
+.session {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* On small screens the name is hidden so the header stays on one line. */
+@media (max-width: 480px) {
+  .session__name {
+    display: none;
+  }
+}

@@ -1,0 +1,13 @@
+.auth-page {
+  display: flex;
+  justify-content: center;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+}
+
+.auth-card h1 {
+  margin-top: 0;
+}
