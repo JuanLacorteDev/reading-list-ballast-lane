@@ -10,28 +10,18 @@ namespace ReadingList.Infrastructure.Tests.Repositories;
 
 public sealed class BookRepositoryTests : IAsyncLifetime
 {
-    private readonly string _dbPath = Path.Combine(Path.GetTempPath(), $"readinglist-tests-{Guid.NewGuid():N}.db");
-
-    private SqliteConnectionFactory _factory = null!;
+    private readonly SqliteTestDatabase _db = new();
     private BookRepository _sut = null!;
     private UserRepository _users = null!;
 
     public async Task InitializeAsync()
     {
-        _factory = new SqliteConnectionFactory($"Data Source={_dbPath};Foreign Keys=True");
-        await new DatabaseInitializer(_factory).InitializeAsync();
-        _sut = new BookRepository(_factory);
-        _users = new UserRepository(_factory);
+        await _db.InitializeAsync();
+        _sut = new BookRepository(_db.Factory);
+        _users = new UserRepository(_db.Factory);
     }
 
-    public Task DisposeAsync()
-    {
-        // On Windows the pooled connection keeps the file locked.
-        SqliteConnection.ClearAllPools();
-        foreach (var file in new[] { _dbPath, $"{_dbPath}-wal", $"{_dbPath}-shm" })
-            if (File.Exists(file)) File.Delete(file);
-        return Task.CompletedTask;
-    }
+    public Task DisposeAsync() => _db.DisposeAsync();
 
     private async Task<Guid> SeedUserAsync(string email = "reader@example.com")
     {
