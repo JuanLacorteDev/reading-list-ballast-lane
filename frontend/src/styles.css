@@ -142,3 +142,8 @@ body {
 .muted {
   color: var(--color-muted);
 }
+
+.btn-block {
+  width: 100%;
+  margin-top: var(--space-2);
+}
