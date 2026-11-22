@@ -1,0 +1,52 @@
+<section>
+  <div class="toolbar">
+    <h1>My books</h1>
+
+    <div class="toolbar__actions">
+      <div class="field field--inline">
+        <label for="status-filter">Status</label>
+        <select id="status-filter" (change)="onFilterChange($any($event.target).value)">
+          <option value="">All</option>
+          @for (status of statuses; track status) {
+            <option [value]="status" [selected]="filter() === status">{{ labels[status] }}</option>
+          }
+        </select>
+      </div>
+
+      <a class="btn btn-primary" routerLink="/books/new">Add book</a>
+    </div>
+  </div>
+
+  @if (error()) {
+    <div class="alert alert-error" role="alert">{{ error() }}</div>
+  }
+
+  @if (loading()) {
+    <p class="muted">Loading...</p>
+  } @else if (books().length === 0) {
+    <div class="card empty">
+      <p>No books here yet.</p>
+      <a class="btn btn-primary" routerLink="/books/new">Add your first book</a>
+    </div>
+  } @else {
+    <ul class="book-grid">
+      @for (book of books(); track book.id) {
+        <li class="card book-card">
+          <div>
+            <span class="badge" [attr.data-status]="book.status">{{ labels[book.status] }}</span>
+            <h2 class="book-card__title">{{ book.title }}</h2>
+            <p class="muted book-card__author">{{ book.author }}</p>
+            @if (book.rating) {
+              <p class="rating" [attr.aria-label]="book.rating + ' out of 5'">{{ stars(book.rating) }}</p>
+            }
+          </div>
+
+          <div class="book-card__actions">
+            <a class="btn btn-secondary" [routerLink]="['/books', book.id, 'edit']">Edit</a>
+            <button type="button" class="btn btn-danger" (click)="remove(book)">Delete</button>
+          </div>
+        </li>
+      }
+    </ul>
+  }
+</section>

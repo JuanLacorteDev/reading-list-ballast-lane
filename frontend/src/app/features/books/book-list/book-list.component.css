@@ -1,0 +1,92 @@
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
+}
+
+.toolbar h1 {
+  margin: 0;
+}
+
+.toolbar__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-3);
+}
+
+.field--inline {
+  margin-bottom: 0;
+  min-width: 160px;
+}
+
+.book-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+
+.book-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.book-card__title {
+  font-size: 1.125rem;
+  margin: var(--space-2) 0 0;
+}
+
+.book-card__author {
+  margin: var(--space-1) 0 0;
+}
+
+.book-card__actions {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.book-card__actions .btn {
+  flex: 1;
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px var(--space-2);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: #eef1f4;
+}
+
+.badge[data-status='Reading'] {
+  background: #e8f0fe;
+  color: #0842a0;
+}
+
+.badge[data-status='Read'] {
+  background: var(--color-success-bg);
+  color: #146c2e;
+}
+
+.badge[data-status='Abandoned'] {
+  background: var(--color-danger-bg);
+  color: var(--color-danger);
+}
+
+.rating {
+  margin: var(--space-2) 0 0;
+  color: #b06d00;
+  letter-spacing: 2px;
+}
+
+.empty {
+  text-align: center;
+}
