@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ReadingList.Application.Abstractions.Persistence;
 using ReadingList.Application.Abstractions.Security;
 using ReadingList.Infrastructure.Persistence.Books;
+using ReadingList.Infrastructure.Persistence.Seed;
 using ReadingList.Infrastructure.Persistence.Users;
 using ReadingList.Infrastructure.Security;
 using System;
@@ -24,6 +25,7 @@ namespace ReadingList.Infrastructure.Persistence.DI
 
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IBookRepository, BookRepository>();
+            services.AddScoped<DemoDataSeeder>();
 
             services.Configure<JwtOptions>(configuration.GetSection(JwtOptions.SectionName));
             services.AddSingleton(TimeProvider.System);

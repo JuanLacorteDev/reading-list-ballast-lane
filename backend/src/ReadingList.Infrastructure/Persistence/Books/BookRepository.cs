@@ -25,16 +25,18 @@ namespace ReadingList.Infrastructure.Persistence.Books
 
             await using var command = connection.CreateCommand();
             command.CommandText = """
-                INSERT INTO BOOKS (Id, OwnerId, Title, Author, Status, CreatedAt) 
-                VALUES ($id, $ownerId, $title, $author, $status, $createdAt);
+                INSERT INTO BOOKS (Id, OwnerId, Title, Author, Status, Rating, CreatedAt, UpdatedAt)
+                VALUES ($id, $ownerId, $title, $author, $status, $rating, $createdAt, $updatedAt);
                 """;
 
             command.Parameters.AddWithValue("$id", book.Id.ToString());
             command.Parameters.AddWithValue("$ownerId", book.OwnerId.ToString());
             command.Parameters.AddWithValue("$title", book.Title);
             command.Parameters.AddWithValue("$author", book.Author);
-            command.Parameters.AddWithValue("status", (int)book.Status);
+            command.Parameters.AddWithValue("$status", (int)book.Status);
+            command.Parameters.AddWithValue("$rating", (object?)book.Rating ?? DBNull.Value);
             command.Parameters.AddWithValue("$createdAt", book.CreatedAt.ToString("O", CultureInfo.InvariantCulture));
+            command.Parameters.AddWithValue("$updatedAt", book.UpdatedAt?.ToString("O", CultureInfo.InvariantCulture) ?? (object)DBNull.Value);
 
             await command.ExecuteNonQueryAsync(cancellationToken);
         }
