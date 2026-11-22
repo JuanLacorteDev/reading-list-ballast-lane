@@ -10,10 +10,10 @@ using System.Text;
 
 namespace ReadingList.Infrastructure.Persistence.Users
 {
-    public sealed class UserRespository : IUserRepository
+    public sealed class UserRepository : IUserRepository
     {
         private readonly IDbConnectionFactory _factory;
-        public UserRespository(IDbConnectionFactory factory)
+        public UserRepository(IDbConnectionFactory factory)
         {
             _factory = factory;
         }

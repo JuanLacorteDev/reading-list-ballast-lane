@@ -15,12 +15,12 @@ namespace ReadingList.Domain.Entities
 
         private User(Email email, string name, string passwordHash)
         {
-            SetUserDatails(email, name, passwordHash);
+            SetDatails(email, name, passwordHash);
         }
 
         private User(Guid id, Email email, string name, string passwordHash, DateTime createdAt, DateTime? updatedAt) : base(id, createdAt, updatedAt)
         {
-            SetUserDatails(email, name, passwordHash);
+            SetDatails(email, name, passwordHash);
         }
 
         public static User Create(Email email, string name, string passwordHash)
@@ -34,7 +34,7 @@ namespace ReadingList.Domain.Entities
         }
 
         [MemberNotNull(nameof(Name), nameof(Email), nameof(PasswordHash))]
-        private void SetUserDatails(Email email, string name, string passwordHash)
+        private void SetDatails(Email email, string name, string passwordHash)
         {
             Guard.AgainstNullOrWhiteSpace(name, nameof(name));
             name = name.Trim();

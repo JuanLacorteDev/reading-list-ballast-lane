@@ -10,10 +10,10 @@ using System.Text;
 
 namespace ReadingList.Infrastructure.Persistence.Books
 {
-    public sealed class BookRespository : IBookRepository
+    public sealed class BookRepository : IBookRepository
     {
         private readonly IDbConnectionFactory _factory;
-        public BookRespository(IDbConnectionFactory factory)
+        public BookRepository(IDbConnectionFactory factory)
         {
             _factory = factory;
         }
