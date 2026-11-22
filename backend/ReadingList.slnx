@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/src/">
+    <Project Path="src/ReadingList.Api.Common/ReadingList.Api.Common.csproj" />
     <Project Path="src/ReadingList.Application/ReadingList.Application.csproj" />
     <Project Path="src/ReadingList.Books.Api/ReadingList.Books.Api.csproj" />
     <Project Path="src/ReadingList.Domain/ReadingList.Domain.csproj" />
